@@ -180,6 +180,11 @@ var s3RequestMetricsGroup = []metricsGroup{
 	{CloudWatchName: "BytesUploaded", Metrics: []metric{
 		{MackerelName: "BytesUploaded", Type: metricsTypeSum},
 	}},
+	{CloudWatchName: "FirstByteLatency", Metrics: []metric{
+		{MackerelName: "FirstByteLatencyAvg", Type: metricsTypeAverage},
+		{MackerelName: "FirstByteLatencyMax", Type: metricsTypeMaximum},
+		{MackerelName: "FirstByteLatencyMin", Type: metricsTypeMinimum},
+	}},
 	{CloudWatchName: "TotalRequestLatency", Metrics: []metric{
 		{MackerelName: "TotalRequestLatencyAvg", Type: metricsTypeAverage},
 		{MackerelName: "TotalRequestLatencyMax", Type: metricsTypeMaximum},
@@ -236,7 +241,16 @@ func (p S3RequestsPlugin) GraphDefinition() map[string]mp.Graphs {
 				{Name: "BytesUploaded", Label: "Uploaded"},
 			},
 		},
-		"latency": {
+		"first_byte_latency": {
+			Label: (labelPrefix + " FirstByteLatency [ms]"),
+			Unit:  "float",
+			Metrics: []mp.Metrics{
+				{Name: "FirstByteLatencyAvg", Label: "Average"},
+				{Name: "FirstByteLatencyMax", Label: "Maximum"},
+				{Name: "FirstByteLatencyMin", Label: "Minimum"},
+			},
+		},
+		"total_request_latency": {
 			Label: (labelPrefix + " TotalRequestLatency [ms]"),
 			Unit:  "float",
 			Metrics: []mp.Metrics{
