@@ -237,7 +237,7 @@ func (p S3RequestsPlugin) GraphDefinition() map[string]mp.Graphs {
 			},
 		},
 		"latency": {
-			Label: (labelPrefix + " TotalRequestLatency"),
+			Label: (labelPrefix + " TotalRequestLatency [ms]"),
 			Unit:  "float",
 			Metrics: []mp.Metrics{
 				{Name: "TotalRequestLatencyAvg", Label: "Average"},
