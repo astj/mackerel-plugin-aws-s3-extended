@@ -1,7 +1,6 @@
 package mpawss3extended
 
 import (
-	"errors"
 	"flag"
 	"log"
 	"strings"
