@@ -196,10 +196,10 @@ func (p S3ExtendedPlugin) FetchMetrics() (map[string]float64, error) {
 
 	for _, met := range s3RequestMetricsGroup {
 		v, err := getLastPointFromCloudWatch(p.CloudWatch, p.BucketName, p.FilterID, met)
-		if err == nil {
-			stats = mergeStatsFromDatapoint(stats, v, met)
-		} else {
+		if err != nil {
 			log.Printf("%s: %s", met, err)
+		} else if v != nil {
+			stats = mergeStatsFromDatapoint(stats, v, met)
 		}
 	}
 	return transformMetrics(stats), nil
