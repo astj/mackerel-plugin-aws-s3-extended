@@ -147,6 +147,9 @@ func mergeStatsFromDatapoint(stats map[string]float64, dp *cloudwatch.Datapoint,
 }
 
 var s3RequestMetricsGroup = []metricsGroup{
+	{CloudWatchName: "AllRequests", Metrics: []metric{
+		{MackerelName: "AllRequests", Type: metricsTypeSum},
+	}},
 	{CloudWatchName: "GetRequests", Metrics: []metric{
 		{MackerelName: "GetRequests", Type: metricsTypeSum},
 	}},
@@ -208,6 +211,7 @@ func (p S3RequestsPlugin) GraphDefinition() map[string]mp.Graphs {
 			Label: (labelPrefix + " Requests"),
 			Unit:  "integer",
 			Metrics: []mp.Metrics{
+				{Name: "AllRequests", Label: "All", Stacked: false},
 				{Name: "GetRequests", Label: "Get", Stacked: true},
 				{Name: "PutRequests", Label: "Put", Stacked: true},
 				{Name: "DeleteRequests", Label: "Delete", Stacked: true},
