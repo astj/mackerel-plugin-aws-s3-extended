@@ -4,7 +4,6 @@ import (
 	"errors"
 	"flag"
 	"log"
-	"strings"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -36,9 +35,10 @@ type metric struct {
 
 // S3RequestsPlugin is mackerel plugin for aws s3 with metric configuration
 type S3RequestsPlugin struct {
-	BucketName string
-	FilterID   string
-	Prefix     string
+	BucketName  string
+	FilterID    string
+	KeyPrefix   string
+	LabelPrefix string
 
 	AccessKeyID     string
 	SecretAccessKey string
@@ -49,10 +49,18 @@ type S3RequestsPlugin struct {
 
 // MetricKeyPrefix interface for PluginWithPrefix
 func (p S3RequestsPlugin) MetricKeyPrefix() string {
-	if p.Prefix == "" {
+	if p.KeyPrefix == "" {
 		return "s3-requests"
 	}
-	return p.Prefix
+	return p.KeyPrefix
+}
+
+// MetricLabelPrefix
+func (p S3RequestsPlugin) MetricLabelPrefix() string {
+	if p.LabelPrefix == "" {
+		return "S3"
+	}
+	return p.LabelPrefix
 }
 
 // prepare creates CloudWatch instance
@@ -209,7 +217,7 @@ func (p S3RequestsPlugin) FetchMetrics() (map[string]float64, error) {
 
 // GraphDefinition of S3RequestsPlugin
 func (p S3RequestsPlugin) GraphDefinition() map[string]mp.Graphs {
-	labelPrefix := strings.Title(p.Prefix)
+	labelPrefix := p.MetricLabelPrefix()
 
 	graphdef := map[string]mp.Graphs{
 		"requests": {
@@ -271,7 +279,8 @@ func Do() {
 	optBucketName := flag.String("bucket-name", "", "S3 bucket Name")
 	optFilterID := flag.String("filter-id", "", "S3 FilterId in metrics configuration")
 	optTempfile := flag.String("tempfile", "", "Temp file name")
-	optPrefix := flag.String("metric-key-prefix", "s3-requests", "Metric key prefix")
+	optKeyPrefix := flag.String("metric-key-prefix", "s3-requests", "Metric key prefix")
+	optLabelPrefix := flag.String("metric-label-prefix", "S3", "Metric label prefix")
 	flag.Parse()
 
 	var plugin S3RequestsPlugin
@@ -282,7 +291,8 @@ func Do() {
 
 	plugin.BucketName = *optBucketName
 	plugin.FilterID = *optFilterID
-	plugin.Prefix = *optPrefix
+	plugin.KeyPrefix = *optKeyPrefix
+	plugin.LabelPrefix = *optLabelPrefix
 
 	err := plugin.prepare()
 	if err != nil {
