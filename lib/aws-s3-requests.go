@@ -130,19 +130,6 @@ func getLastPointFromCloudWatch(cw cloudwatchiface.CloudWatchAPI, bucketName str
 	return latestDp, nil
 }
 
-// TransformMetrics converts some of datapoints to post differences of two metrics
-func transformMetrics(stats map[string]float64) map[string]float64 {
-	if totalCount, ok := stats["TEMPORARY_invocations_total"]; ok {
-		if errorCount, ok := stats["invocations_error"]; ok {
-			stats["invocations_success"] = totalCount - errorCount
-		} else {
-			stats["invocations_success"] = totalCount
-		}
-		delete(stats, "TEMPORARY_invocations_total")
-	}
-	return stats
-}
-
 func mergeStatsFromDatapoint(stats map[string]float64, dp *cloudwatch.Datapoint, mg metricsGroup) map[string]float64 {
 	for _, met := range mg.Metrics {
 		switch met.Type {
@@ -209,7 +196,7 @@ func (p S3RequestsPlugin) FetchMetrics() (map[string]float64, error) {
 			stats = mergeStatsFromDatapoint(stats, v, met)
 		}
 	}
-	return transformMetrics(stats), nil
+	return stats, nil
 }
 
 // GraphDefinition of S3RequestsPlugin
