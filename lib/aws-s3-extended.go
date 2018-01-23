@@ -1,4 +1,4 @@
-package mpawss3extended
+package mpawss3requests
 
 import (
 	"flag"
@@ -33,8 +33,8 @@ type metric struct {
 	Type         string
 }
 
-// S3ExtendedPlugin is mackerel plugin for aws s3 with metric configuration
-type S3ExtendedPlugin struct {
+// S3RequestsPlugin is mackerel plugin for aws s3 with metric configuration
+type S3RequestsPlugin struct {
 	BucketName string
 	FilterID   string
 	Prefix     string
@@ -47,7 +47,7 @@ type S3ExtendedPlugin struct {
 }
 
 // MetricKeyPrefix interface for PluginWithPrefix
-func (p S3ExtendedPlugin) MetricKeyPrefix() string {
+func (p S3RequestsPlugin) MetricKeyPrefix() string {
 	if p.Prefix == "" {
 		return "s3-extented"
 	}
@@ -55,7 +55,7 @@ func (p S3ExtendedPlugin) MetricKeyPrefix() string {
 }
 
 // prepare creates CloudWatch instance
-func (p *S3ExtendedPlugin) prepare() error {
+func (p *S3RequestsPlugin) prepare() error {
 	sess, err := session.NewSession()
 	if err != nil {
 		return err
@@ -191,7 +191,7 @@ var s3RequestMetricsGroup = []metricsGroup{
 }
 
 // FetchMetrics fetch the metrics
-func (p S3ExtendedPlugin) FetchMetrics() (map[string]float64, error) {
+func (p S3RequestsPlugin) FetchMetrics() (map[string]float64, error) {
 	stats := make(map[string]float64)
 
 	for _, met := range s3RequestMetricsGroup {
@@ -205,8 +205,8 @@ func (p S3ExtendedPlugin) FetchMetrics() (map[string]float64, error) {
 	return transformMetrics(stats), nil
 }
 
-// GraphDefinition of S3ExtendedPlugin
-func (p S3ExtendedPlugin) GraphDefinition() map[string]mp.Graphs {
+// GraphDefinition of S3RequestsPlugin
+func (p S3RequestsPlugin) GraphDefinition() map[string]mp.Graphs {
 	labelPrefix := strings.Title(p.Prefix)
 
 	graphdef := map[string]mp.Graphs{
@@ -262,7 +262,7 @@ func Do() {
 	optPrefix := flag.String("metric-key-prefix", "s3-extended", "Metric key prefix")
 	flag.Parse()
 
-	var plugin S3ExtendedPlugin
+	var plugin S3RequestsPlugin
 
 	plugin.AccessKeyID = *optAccessKeyID
 	plugin.SecretAccessKey = *optSecretAccessKey
