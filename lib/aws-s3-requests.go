@@ -1,6 +1,7 @@
 package mpawss3requests
 
 import (
+	"errors"
 	"flag"
 	"log"
 	"strings"
@@ -56,6 +57,12 @@ func (p S3RequestsPlugin) MetricKeyPrefix() string {
 
 // prepare creates CloudWatch instance
 func (p *S3RequestsPlugin) prepare() error {
+	// validate params
+	// apparently we need BucketName and FilterID
+	if p.BucketName == "" || p.FilterID == "" {
+		return errors.New("Both --bucket-name and --filter-id are necessory")
+	}
+
 	sess, err := session.NewSession()
 	if err != nil {
 		return err
