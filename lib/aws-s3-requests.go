@@ -214,7 +214,7 @@ func (p S3RequestsPlugin) GraphDefinition() map[string]mp.Graphs {
 	graphdef := map[string]mp.Graphs{
 		"requests": {
 			Label: (labelPrefix + " Requests"),
-			Unit:  "integer",
+			Unit:  mp.UnitInteger,
 			Metrics: []mp.Metrics{
 				{Name: "AllRequests", Label: "All", Stacked: false},
 				{Name: "GetRequests", Label: "Get", Stacked: true},
@@ -227,7 +227,7 @@ func (p S3RequestsPlugin) GraphDefinition() map[string]mp.Graphs {
 		},
 		"errors": {
 			Label: (labelPrefix + " Errors"),
-			Unit:  "integer",
+			Unit:  mp.UnitInteger,
 			Metrics: []mp.Metrics{
 				{Name: "4xxErrors", Label: "4xx"},
 				{Name: "5xxErrors", Label: "5xx"},
@@ -235,7 +235,7 @@ func (p S3RequestsPlugin) GraphDefinition() map[string]mp.Graphs {
 		},
 		"bytes": {
 			Label: (labelPrefix + " Bytes"),
-			Unit:  "bytes",
+			Unit:  mp.UnitBytes,
 			Metrics: []mp.Metrics{
 				{Name: "BytesDownloaded", Label: "Downloaded"},
 				{Name: "BytesUploaded", Label: "Uploaded"},
@@ -243,7 +243,7 @@ func (p S3RequestsPlugin) GraphDefinition() map[string]mp.Graphs {
 		},
 		"first_byte_latency": {
 			Label: (labelPrefix + " FirstByteLatency [ms]"),
-			Unit:  "float",
+			Unit:  mp.UnitFloat,
 			Metrics: []mp.Metrics{
 				{Name: "FirstByteLatencyAvg", Label: "Average"},
 				{Name: "FirstByteLatencyMax", Label: "Maximum"},
@@ -252,7 +252,7 @@ func (p S3RequestsPlugin) GraphDefinition() map[string]mp.Graphs {
 		},
 		"total_request_latency": {
 			Label: (labelPrefix + " TotalRequestLatency [ms]"),
-			Unit:  "float",
+			Unit:  mp.UnitFloat,
 			Metrics: []mp.Metrics{
 				{Name: "TotalRequestLatencyAvg", Label: "Average"},
 				{Name: "TotalRequestLatencyMax", Label: "Maximum"},
