@@ -49,7 +49,7 @@ type S3RequestsPlugin struct {
 // MetricKeyPrefix interface for PluginWithPrefix
 func (p S3RequestsPlugin) MetricKeyPrefix() string {
 	if p.Prefix == "" {
-		return "s3-extented"
+		return "s3-requests"
 	}
 	return p.Prefix
 }
@@ -259,7 +259,7 @@ func Do() {
 	optBucketName := flag.String("bucket-name", "", "S3 bucket Name")
 	optFilterID := flag.String("filter-id", "", "S3 FilterId in metrics configuration")
 	optTempfile := flag.String("tempfile", "", "Temp file name")
-	optPrefix := flag.String("metric-key-prefix", "s3-extended", "Metric key prefix")
+	optPrefix := flag.String("metric-key-prefix", "s3-requests", "Metric key prefix")
 	flag.Parse()
 
 	var plugin S3RequestsPlugin
