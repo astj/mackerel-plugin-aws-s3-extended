@@ -60,7 +60,7 @@ func (p *S3RequestsPlugin) prepare() error {
 	// validate params
 	// apparently we need BucketName and FilterID
 	if p.BucketName == "" || p.FilterID == "" {
-		return errors.New("Both --bucket-name and --filter-id are necessory")
+		return errors.New("Both --bucket-name and --filter-id are necessary")
 	}
 
 	sess, err := session.NewSession()
