@@ -3,6 +3,11 @@ mackerel-plugin-aws-s3-requests
 
 AWS S3 requests metrics plugin for mackerel.io agent.
 
+## DEPRECATED
+
+This plugin is now part of [Official Mackerel Agent Plugins](https://github.com/mackerelio/mackerel-agent-plugins/tree/master/mackerel-plugin-aws-s3-requests).
+Please use official plugins, not this repository.
+
 ## Requirement
 
 You need a metrics configuration FilterID for the target S3 bucket to get CloudWatch metrics for the bucket. If you haven't created any configurations yet, you can create by AWS CLI or AWS API. (ref: https://docs.aws.amazon.com/AmazonS3/latest/dev/metrics-configurations.html)
